@@ -329,6 +329,14 @@ video::-webkit-media-controls-fullscreen-button {
   font-size: 18px;
   line-height: 1.6;
 }
+
+/* Hide floating CTA when video is in fullscreen mode */
+#player-wrapper.fullscreen ~ #floatingCta,
+#player-wrapper.fullscreen + #floatingCta {
+  display: none;
+}
+
+
 @media (max-width: 768px) {
   .hero {
     flex-direction: column;
@@ -434,7 +442,7 @@ video::-webkit-media-controls-fullscreen-button {
 
       <div id="player-wrapper">
 	  
-	   <button onclick="closeScoreBoard()" class="absolute top-3 right-3 z-20
+	   <button onclick="exitFakeFullscreen()" class="absolute top-3 right-3 z-20
            bg-black/60 text-white
            rounded-full w-9 h-9
            flex items-center justify-center
@@ -634,11 +642,13 @@ function closeScoreBoard() {
 function enterFakeFullscreen() {
   wrapper.classList.add("fullscreen");
   document.body.style.overflow = "hidden";
+  hideFloatingCta(); 
 }
 
 function exitFakeFullscreen() {
   wrapper.classList.remove("fullscreen");
   document.body.style.overflow = "";
+  showFloatingCta();
 }
 
 storyVideo.addEventListener("play", enterFakeFullscreen);
@@ -669,7 +679,6 @@ function showMessage(text) {
     msg.style.opacity = "0";
   }, 2000);
 }
-
 
 
 </script>
@@ -889,7 +898,17 @@ function showMessage(text) {
   class="floating-cta">
   Unlock the Full Story + 5 days Activities @ ₹99
 </a>
+<script>
+const floatingCta = document.getElementById("floatingCta");
 
+function hideFloatingCta() {
+  if (floatingCta) floatingCta.style.display = "none";
+}
+
+function showFloatingCta() {
+  if (floatingCta) floatingCta.style.display = "block";
+}
+</script>
 
 </body>
 </html>
